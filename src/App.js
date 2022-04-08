@@ -2,7 +2,7 @@ import { StrictMode, useState } from "react";
 import ReactDOM from "react-dom";
 // eslint-disable-next-line
 import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
-import Demo from "./Demo";
+import SingleNote from "./SingleNote";
 import ThemeContext from "./ThemeContext";
 
 const App = () => {
@@ -21,7 +21,7 @@ const App = () => {
             </Link>
           </header>
           <Routes>
-            <Route path="/" element={<Demo />} />
+            <Route path="/" element={<SingleNote />} />
           </Routes>
         </Router>
       </div>
