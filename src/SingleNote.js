@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import { renderAbc } from "abcjs";
 
 function generateRandomNote() {
@@ -8,30 +8,29 @@ function generateRandomNote() {
   return randomNote;
 }
 
-function generateNotationWithRandomNote() {
-  const note = generateRandomNote();
-  return {
-    note: note,
-    octave: 4,
-    notation: `
-    T: Какая это нота?
-    L: 1/4
-    K: clef=treble
-    ${note}`,
-  };
-}
-
-const SingleNote = () => {
+const Note = ({ note }) => {
   const abcRef = useRef();
+  const staveData = `
+  T: Какая это нота?
+  L: 1/4
+  K: clef=treble
+  ${note}`;
 
   useEffect(() => {
-    const { note, octave, notation } = generateNotationWithRandomNote();
-    console.log(abcRef.current);
-    renderAbc(abcRef.current.id, notation);
-  }, []);
+    renderAbc(abcRef.current.id, staveData);
+  }, [note]);
+
+  return <div id={"abcjs-result"} style={{ width: "100%" }} ref={abcRef} />;
+};
+
+const SingleNote = () => {
+  const [alternator, setAlternator] = useState(false);
+  const note = useMemo(() => generateRandomNote(), [alternator]);
+
   return (
     <div>
-      <div id={"abcjs-result"} style={{ width: "100%" }} ref={abcRef} />
+      <Note note={note} />
+      <button onClick={() => setAlternator(!alternator)}>Дальше</button>
     </div>
   );
 };
