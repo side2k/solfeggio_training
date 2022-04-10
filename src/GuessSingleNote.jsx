@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import SingleNote from "./SingleNote";
+import SelectNote from "./SelectNote";
 
 import { NOTES, noteToName } from "./notes";
 
@@ -15,16 +16,20 @@ const GuessSingleNote = () => {
   const [alternator, setAlternator] = useState(false);
   const { note, octave } = useMemo(() => generateRandomNote(), [alternator]);
 
+  const onSelectNote = ({ selectedNote, selectedOctave }) => {
+    if (selectedNote === note && selectedOctave === octave) {
+      alert("Угадал!");
+    } else {
+      alert("Не угадал!");
+    }
+    setAlternator(!alternator);
+  };
+
   return (
     <div>
       <SingleNote note={note} octave={octave} />
       <div className="py-3">{noteToName(note, octave)}</div>
-      <button
-        className="border border-black rounded p-3 bg-gray-300"
-        onClick={() => setAlternator(!alternator)}
-      >
-        Дальше
-      </button>
+      <SelectNote onSelectNote={onSelectNote} />
     </div>
   );
 };
