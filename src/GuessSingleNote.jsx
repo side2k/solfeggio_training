@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import SingleNote from "./SingleNote";
 import SelectNote from "./SelectNote";
 
-import { NOTES, noteToName } from "./notes";
+import { NOTES } from "./notes";
 
 function generateRandomNote() {
   const note = NOTES[Math.floor(Math.random() * NOTES.length)];
@@ -28,7 +28,6 @@ const GuessSingleNote = () => {
   return (
     <div>
       <SingleNote note={note} octave={octave} />
-      <div className="py-3">{noteToName(note, octave)}</div>
       <SelectNote onSelectNote={onSelectNote} />
     </div>
   );
