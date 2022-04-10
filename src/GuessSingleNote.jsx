@@ -41,10 +41,8 @@ const GuessSingleNote = () => {
 
   return (
     <div>
-      <div className="flex flex-row">
-        <SingleNote note={note} octave={octave} />
-        <Results right={rightAnswersCount} wrong={wrongAnswersCount} />
-      </div>
+      <Results right={rightAnswersCount} wrong={wrongAnswersCount} />
+      <SingleNote note={note} octave={octave} />
       <SelectNote onSelectNote={onSelectNote} ref={noteSelector} />
     </div>
   );

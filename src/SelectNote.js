@@ -35,7 +35,7 @@ const SelectNote = forwardRef(({ onSelectNote }, ref) => {
   return (
     <div className="note-selector">
       {visibleOctaves.map((octave, key) => (
-        <div className="grid grid-cols-7 gap-3 pb-2" key={key}>
+        <div className="flex flex-row  gap-1 pb-2" key={key}>
           {NOTES.map((note, key) => (
             <div key={key}>
               <button
