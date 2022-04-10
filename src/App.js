@@ -2,8 +2,8 @@ import { StrictMode, useState } from "react";
 import ReactDOM from "react-dom";
 // eslint-disable-next-line
 import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
-import SingleNote from "./SingleNote";
 import ThemeContext from "./ThemeContext";
+import GuessSingleNote from "./GuessSingleNote";
 
 const App = () => {
   const theme = useState("pink");
@@ -21,7 +21,7 @@ const App = () => {
             </Link>
           </header>
           <Routes>
-            <Route path="/" element={<SingleNote />} />
+            <Route path="/" element={<GuessSingleNote />} />
           </Routes>
         </Router>
       </div>
