@@ -23,7 +23,7 @@ const SingleNote = ({ note, octave }) => {
   ${noteToNotation(note, octave)}`;
 
   useEffect(() => {
-    renderAbc(abcRef.current.id, staveData);
+    renderAbc(abcRef.current.id, staveData, { staffwidth: 200 });
   }, [note]);
 
   return <div id={"abcjs-result"} style={{ width: "100%" }} ref={abcRef} />;
