@@ -6,7 +6,9 @@
   "scripts": {
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "lint": "eslint \"src/**/*.{js,jsx}\" --quiet",
-    "dev": "parcel src/index.html"
+    "build:static": "parcel build static/**/*",
+    "build": "NODE_ENV=production parcel build src/index.html",
+    "dev": "npm run build:static && parcel src/index.html"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +22,7 @@
     "@tailwindcss/forms": "^0.2.1",
     "@tailwindcss/postcss7-compat": "^2.0.3",
     "@types/react": "^17.0.1",
-    "autoprefixer": "^9.8.6",
+    "autoprefixer": "^9.8.8",
     "eslint": "^7.18.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.22.1",
@@ -28,9 +30,9 @@
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "parcel": "^1.12.3",
-    "postcss": "^7.0.35",
+    "postcss": "^7.0.39",
     "prettier": "^2.5.1",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.3"
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
   },
   "dependencies": {
     "abcjs": "^6.0.2",
