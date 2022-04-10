@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import SingleNote from "./SingleNote";
 import SelectNote from "./SelectNote";
 
@@ -15,20 +15,24 @@ function generateRandomNote() {
 const GuessSingleNote = () => {
   const [alternator, setAlternator] = useState(false);
   const { note, octave } = useMemo(() => generateRandomNote(), [alternator]);
+  const noteSelector = useRef();
+  const indicatorTimeout = 1500;
 
   const onSelectNote = ({ selectedNote, selectedOctave }) => {
     if (selectedNote === note && selectedOctave === octave) {
-      alert("Угадал!");
+      noteSelector.current.indicateRight(indicatorTimeout);
     } else {
-      alert("Не угадал!");
+      noteSelector.current.indicateWrong(indicatorTimeout);
     }
-    setAlternator(!alternator);
+    setTimeout(() => {
+      setAlternator(!alternator);
+    }, indicatorTimeout);
   };
 
   return (
     <div>
       <SingleNote note={note} octave={octave} />
-      <SelectNote onSelectNote={onSelectNote} />
+      <SelectNote onSelectNote={onSelectNote} ref={noteSelector} />
     </div>
   );
 };
