@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.note-selector {
-  width: 450px;
+body {
+  max-width: 400px;
 }

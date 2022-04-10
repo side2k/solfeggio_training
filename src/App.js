@@ -22,6 +22,16 @@ const App = () => {
           </Routes>
         </Router>
       </div>
+      <div className="text-sm mt-10">
+        <p>
+          Данное приложение создано для тренировки навыка чтения простых нот.
+        </p>
+        <p className="mt-5">
+          2022, Леонид Амиров (
+          <a href="mailto:leonid.amirov@gmail.com">leonid.amirov@gmail.com</a>){" "}
+          <a href="https://github.com/side2k">github.com/side2k</a>
+        </p>
+      </div>
     </ThemeContext.Provider>
   );
 };
