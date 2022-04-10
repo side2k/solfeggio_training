@@ -1,5 +1,5 @@
 export const NOTES = ["C", "D", "E", "F", "G", "A", "B"];
-export const NOTE_NAMES = ["до", "ре", "ми", "фа", "соль", "ля", "си"];
+export const NOTE_NAMES = ["До", "Ре", "Ми", "Фа", "Соль", "Ля", "Си"];
 export const OCTAVES = [0, 1, 2, 3, 4, 5, 6];
 export const OCTAVE_LABELS = [
   "суб-контр", // 0
