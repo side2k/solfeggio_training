@@ -17,6 +17,7 @@ const GuessSingleNote = () => {
   const [octave, setOctave] = useState();
   const [rightAnswersCount, setRightAnswersCount] = useState(0);
   const [wrongAnswersCount, setWrongAnswersCount] = useState(0);
+  const [disableSelector, setDisableSelector] = useState(false);
   const noteSelector = useRef();
 
   const indicatorTimeout = 500;
@@ -38,8 +39,10 @@ const GuessSingleNote = () => {
       noteSelector.current.indicateRight(indicatorTimeout);
       beepRight.play();
       setRightAnswersCount(rightAnswersCount + 1);
+      setDisableSelector(true);
       setTimeout(() => {
         updateNote();
+        setDisableSelector(false);
       }, indicatorTimeout);
     } else {
       noteSelector.current.indicateWrong(indicatorTimeout);
@@ -52,7 +55,11 @@ const GuessSingleNote = () => {
     <div>
       <Results right={rightAnswersCount} wrong={wrongAnswersCount} />
       <SingleNote note={note} octave={octave} />
-      <SelectNote onSelectNote={onSelectNote} ref={noteSelector} />
+      <SelectNote
+        onSelectNote={onSelectNote}
+        ref={noteSelector}
+        isDisabled={disableSelector}
+      />
     </div>
   );
 };
