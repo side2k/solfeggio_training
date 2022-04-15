@@ -25,7 +25,14 @@ const GuessSingleNote = () => {
   const beepWrong = new Audio("./beep_wrong.mp3");
 
   const updateNote = () => {
-    const randomNote = generateRandomNote();
+    let randomNote;
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      randomNote = generateRandomNote();
+      if (randomNote.note != note) {
+        break;
+      }
+    }
     setNote(randomNote.note);
     setOctave(randomNote.octave);
   };
