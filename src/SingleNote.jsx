@@ -24,7 +24,7 @@ const SingleNote = ({ note, octave }) => {
 
   useEffect(() => {
     renderAbc(abcRef.current.id, staveData, { staffwidth: 400, scale: 3.3 });
-  }, [note]);
+  }, [note, octave]);
 
   return <div id={"abcjs-result"} style={{ width: "100%" }} ref={abcRef} />;
 };
