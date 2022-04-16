@@ -6,17 +6,20 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "prettier",
   ],
   rules: {
     "react/prop-types": 0,
     "react/react-in-jsx-scope": 0,
   },
-  plugins: ["react", "import", "jsx-a11y"],
-  parser: "@babel/eslint-parser",
+  plugins: ["react", "import", "jsx-a11y", "@typescript-eslint"],
+  parser: "@typescript-eslint/parser",
   parserOptions: {
+    project: "./tsconfig.json",
     requireConfigFile: false,
-    ecmaVersion: 2021,
+    ecmaVersion: 2020,
     sourceType: "module",
     ecmaFeatures: {
       jsx: true,
@@ -32,9 +35,12 @@ module.exports = {
     react: {
       version: "detect",
     },
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"],
+    },
     "import/resolver": {
-      node: {
-        extensions: [".js", ".jsx"],
+      typescript: {
+        alwaysTryTypes: true,
       },
     },
   },

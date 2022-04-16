@@ -1,7 +1,8 @@
-import { useRef, useEffect } from "react";
 import { renderAbc } from "abcjs";
+import { FunctionComponent, useEffect, useRef } from "react";
+import { NoteData } from "./types";
 
-function noteToNotation(note, octave) {
+function noteToNotation({ note, octave }: NoteData) {
   const startOctave = 4;
   const delta = octave - startOctave;
 
@@ -14,17 +15,20 @@ function noteToNotation(note, octave) {
   return note.toLowerCase() + "'".repeat(delta - 1);
 }
 
-const SingleNote = ({ note, octave }) => {
-  const abcRef = useRef();
+const SingleNote: FunctionComponent<NoteData> = ({ note, octave }) => {
+  const abcRef = useRef<HTMLDivElement>(null);
 
   const staveData = `
   L: 1/4
   K: clef=treble
-  ${noteToNotation(note, octave)}`;
+  ${noteToNotation({ note, octave })}`;
 
   useEffect(() => {
+    if (!abcRef.current) {
+      return;
+    }
     renderAbc(abcRef.current.id, staveData, { staffwidth: 400, scale: 3.3 });
-  }, [note, octave]);
+  }, [staveData]);
 
   return <div id={"abcjs-result"} style={{ width: "100%" }} ref={abcRef} />;
 };

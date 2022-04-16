@@ -1,24 +1,17 @@
-import { useState, useRef } from "react";
-import SingleNote from "./SingleNote";
-import SelectNote from "./SelectNote";
+import { useRef, useState } from "react";
 import Results from "./Results";
-
-import { NOTES } from "./notes";
-
-function generateRandomNote() {
-  const note = NOTES[Math.floor(Math.random() * NOTES.length)];
-  const octaves = [4, 5];
-  const octave = octaves[Math.floor(Math.random() * octaves.length)];
-  return { note, octave };
-}
+import SelectNote, { NoteSelectorRef } from "./SelectNote";
+import SingleNote from "./SingleNote";
+import { Note, NoteData, Octave } from "./types";
+import { generateRandomNote } from "./utils";
 
 const GuessSingleNote = () => {
-  const [note, setNote] = useState();
-  const [octave, setOctave] = useState();
+  const [note, setNote] = useState<Note>();
+  const [octave, setOctave] = useState<Octave>();
   const [rightAnswersCount, setRightAnswersCount] = useState(0);
   const [wrongAnswersCount, setWrongAnswersCount] = useState(0);
   const [disableSelector, setDisableSelector] = useState(false);
-  const noteSelector = useRef();
+  const noteSelector = useRef<NoteSelectorRef | null>(null);
 
   const indicatorTimeout = 500;
   const beepRight = new Audio("./beep_right.mp3");
@@ -39,12 +32,17 @@ const GuessSingleNote = () => {
 
   if (!note || !octave) {
     updateNote();
+    return <div></div>;
   }
 
-  const onSelectNote = ({ selectedNote, selectedOctave }) => {
-    if (selectedNote === note && selectedOctave === octave) {
+  const onSelectNote = (selectedNote: NoteData) => {
+    if (!noteSelector.current) {
+      return <div></div>;
+    }
+
+    if (selectedNote.note === note && selectedNote.octave === octave) {
       noteSelector.current.indicateRight(indicatorTimeout);
-      beepRight.play();
+      void beepRight.play();
       setRightAnswersCount(rightAnswersCount + 1);
       setDisableSelector(true);
       setTimeout(() => {
@@ -53,7 +51,7 @@ const GuessSingleNote = () => {
       }, indicatorTimeout);
     } else {
       noteSelector.current.indicateWrong(indicatorTimeout);
-      beepWrong.play();
+      void beepWrong.play();
       setWrongAnswersCount(wrongAnswersCount + 1);
     }
   };
