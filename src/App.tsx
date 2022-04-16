@@ -1,15 +1,11 @@
-import { StrictMode, useState } from "react";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom";
-// eslint-disable-next-line
 import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
-import ThemeContext from "./ThemeContext";
 import GuessSingleNote from "./GuessSingleNote";
 
 const App = () => {
-  const theme = useState("pink");
-
   return (
-    <ThemeContext.Provider value={theme}>
+    <div>
       <div className="p-0 m-0">
         <Router>
           <header className="w-full mb-10 text-center p-3 bg-gray-600">
@@ -32,7 +28,7 @@ const App = () => {
           <a href="https://github.com/side2k">github.com/side2k</a>
         </p>
       </div>
-    </ThemeContext.Provider>
+    </div>
   );
 };
 
