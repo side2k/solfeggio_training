@@ -3,7 +3,7 @@ import SingleNote from "./SingleNote";
 import SelectNote from "./SelectNote";
 import Results from "./Results";
 
-import { NOTES } from "./notes";
+import { NOTES } from "./utils";
 
 function generateRandomNote() {
   const note = NOTES[Math.floor(Math.random() * NOTES.length)];

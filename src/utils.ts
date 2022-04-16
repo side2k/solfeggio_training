@@ -1,3 +1,5 @@
+import { Note, Octave } from "./types";
+
 export const NOTES = ["C", "D", "E", "F", "G", "A", "B"];
 export const NOTE_NAMES = ["До", "Ре", "Ми", "Фа", "Соль", "Ля", "Си"];
 export const OCTAVES = [0, 1, 2, 3, 4, 5, 6];
@@ -21,7 +23,7 @@ export const OCTAVE_SHORT_LABELS = [
   "3", //6
 ];
 
-export function noteToName(note, octave) {
+export function noteToName(note: Note, octave: Octave) {
   const noteLabelIndex = NOTES.indexOf(note);
   const octaveLabelIndex = OCTAVES.indexOf(octave);
   console.log(note, octave, octaveLabelIndex);
@@ -29,7 +31,7 @@ export function noteToName(note, octave) {
   return `${NOTE_NAMES[noteLabelIndex]} ${OCTAVE_LABELS[octaveLabelIndex]} октавы`;
 }
 
-export function noteToShortName(note, octave) {
+export function noteToShortName(note: Note, octave: Octave) {
   const noteLabelIndex = NOTES.indexOf(note);
   const octaveLabelIndex = OCTAVES.indexOf(octave);
 
