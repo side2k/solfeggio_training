@@ -9,7 +9,7 @@ cache:
   paths:
     - .npm/
 
-build_a:
+eslint:
   stage: lint
   script:
     - npm ci --cache .npm --prefer-offline
