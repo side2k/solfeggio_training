@@ -9,8 +9,7 @@ export enum Note {
 }
 
 export enum Octave {
-  DblContra = -1,
-  SubContra,
+  SubContra = 0,
   Contra,
   Great,
   Small,
@@ -20,6 +19,7 @@ export enum Octave {
   Line4,
   Line5,
   Line6,
+  DblContra = -1,
 }
 export type NoteData = {
   note: Note;
