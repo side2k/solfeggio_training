@@ -1,17 +1,9 @@
-import { useState, useRef } from "react";
-import SingleNote from "./SingleNote";
-import SelectNote, { NoteSelectorRef } from "./SelectNote";
+import { useRef, useState } from "react";
 import Results from "./Results";
-
-import { NOTES } from "./utils";
-import { Note, Octave, NoteData } from "./types";
-
-function generateRandomNote(): NoteData {
-  const note = NOTES[Math.floor(Math.random() * NOTES.length)] as Note;
-  const octaves = [4, 5];
-  const octave = octaves[Math.floor(Math.random() * octaves.length)];
-  return { note, octave };
-}
+import SelectNote, { NoteSelectorRef } from "./SelectNote";
+import SingleNote from "./SingleNote";
+import { Note, NoteData, Octave } from "./types";
+import { generateRandomNote } from "./utils";
 
 const GuessSingleNote = () => {
   const [note, setNote] = useState<Note>();

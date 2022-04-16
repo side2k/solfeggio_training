@@ -1,14 +1,17 @@
 import { useState, useImperativeHandle, forwardRef } from "react";
 import { noteToShortName } from "./utils";
-import { Note, NoteData } from "./types";
+import { Note, Octave, NoteData } from "./types";
 
-const visibleOctaves = [4, 5];
-const stateNormal = 0;
-const stateIndicateRight = 1;
-const stateIndicateWrong = 2;
+const visibleOctaves: Octave[] = [Octave.Line1, Octave.Line2];
 
+enum IndicatorState {
+  Normal = 0,
+  Right,
+  Wrong,
+}
 type NoteSelectEvent = (selectedNote: NoteData) => void;
 type SelectNoteProps = { onSelectNote: NoteSelectEvent; isDisabled: boolean };
+
 export type NoteSelectorRef = {
   indicateRight: (timeout: number) => void;
   indicateWrong: (timeout: number) => void;
@@ -17,7 +20,9 @@ export type NoteSelectorRef = {
 const SelectNote = forwardRef<NoteSelectorRef, SelectNoteProps>(
   (props, ref) => {
     const [selectedNote, setSelectedNote] = useState<NoteData | null>(null);
-    const [indicateState, setIndicateState] = useState(stateNormal);
+    const [indicateState, setIndicateState] = useState<IndicatorState>(
+      IndicatorState.Normal
+    );
 
     const getNoteClickEvent = ({ note, octave }: NoteData) => {
       return () => {
@@ -28,12 +33,12 @@ const SelectNote = forwardRef<NoteSelectorRef, SelectNoteProps>(
 
     useImperativeHandle(ref, () => ({
       indicateRight: (timeout: number) => {
-        setIndicateState(stateIndicateRight);
-        setTimeout(() => setIndicateState(stateNormal), timeout);
+        setIndicateState(IndicatorState.Right);
+        setTimeout(() => setIndicateState(IndicatorState.Normal), timeout);
       },
       indicateWrong: (timeout: number) => {
-        setIndicateState(stateIndicateWrong);
-        setTimeout(() => setIndicateState(stateNormal), timeout);
+        setIndicateState(IndicatorState.Wrong);
+        setTimeout(() => setIndicateState(IndicatorState.Normal), timeout);
       },
     }));
 
@@ -51,16 +56,16 @@ const SelectNote = forwardRef<NoteSelectorRef, SelectNoteProps>(
                   selectedNote &&
                   note === selectedNote.note &&
                   octave === selectedNote.octave
-                    ? indicateState === stateIndicateRight
+                    ? indicateState === IndicatorState.Right
                       ? "bg-green-500"
-                      : indicateState === stateIndicateWrong
+                      : indicateState === IndicatorState.Wrong
                       ? "bg-red-500"
                       : "bg-none"
                     : ""
                 }
                 `}
                 >
-                  {noteToShortName(note, octave)}
+                  {noteToShortName({ note, octave })}
                 </button>
               </div>
             ))}
