@@ -9,7 +9,7 @@ const stateIndicateWrong = 2;
 
 type NoteSelectEvent = (selectedNote: NoteData) => void;
 type SelectNoteProps = { onSelectNote: NoteSelectEvent; isDisabled: boolean };
-type NoteSelectorRef = {
+export type NoteSelectorRef = {
   indicateRight: (timeout: number) => void;
   indicateWrong: (timeout: number) => void;
 };
