@@ -6,7 +6,7 @@ const stateNormal = 0;
 const stateIndicateRight = 1;
 const stateIndicateWrong = 2;
 
-const SelectNote = forwardRef(({ onSelectNote }, ref) => {
+const SelectNote = forwardRef(({ onSelectNote, isDisabled }, ref) => {
   const [selectedNote, setSelectedNote] = useState({
     selectedNote: null,
     selectedOctave: null,
@@ -39,6 +39,7 @@ const SelectNote = forwardRef(({ onSelectNote }, ref) => {
           {NOTES.map((note, key) => (
             <div key={key}>
               <button
+                disabled={isDisabled ? true : false}
                 onClick={getNoteClickEvent(note, octave)}
                 className={`rounded border border-black p-1
                 ${

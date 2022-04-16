@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from "react";
+import { useState, useRef } from "react";
 import SingleNote from "./SingleNote";
 import SelectNote from "./SelectNote";
 import Results from "./Results";
@@ -9,41 +9,57 @@ function generateRandomNote() {
   const note = NOTES[Math.floor(Math.random() * NOTES.length)];
   const octaves = [4, 5];
   const octave = octaves[Math.floor(Math.random() * octaves.length)];
-
   return { note, octave };
 }
 
 const GuessSingleNote = () => {
-  const [alternator, setAlternator] = useState(false);
-  const { note, octave } = useMemo(() => generateRandomNote(), [alternator]);
-  const noteSelector = useRef();
-  const indicatorTimeout = 500;
+  const [note, setNote] = useState();
+  const [octave, setOctave] = useState();
   const [rightAnswersCount, setRightAnswersCount] = useState(0);
   const [wrongAnswersCount, setWrongAnswersCount] = useState(0);
+  const [disableSelector, setDisableSelector] = useState(false);
+  const noteSelector = useRef();
 
+  const indicatorTimeout = 500;
   const beepRight = new Audio("./beep_right.mp3");
   const beepWrong = new Audio("./beep_wrong.mp3");
+
+  const updateNote = () => {
+    const randomNote = generateRandomNote();
+    setNote(randomNote.note);
+    setOctave(randomNote.octave);
+  };
+
+  if (!note || !octave) {
+    updateNote();
+  }
 
   const onSelectNote = ({ selectedNote, selectedOctave }) => {
     if (selectedNote === note && selectedOctave === octave) {
       noteSelector.current.indicateRight(indicatorTimeout);
-      setRightAnswersCount(rightAnswersCount + 1);
       beepRight.play();
+      setRightAnswersCount(rightAnswersCount + 1);
+      setDisableSelector(true);
+      setTimeout(() => {
+        updateNote();
+        setDisableSelector(false);
+      }, indicatorTimeout);
     } else {
       noteSelector.current.indicateWrong(indicatorTimeout);
-      setWrongAnswersCount(wrongAnswersCount + 1);
       beepWrong.play();
+      setWrongAnswersCount(wrongAnswersCount + 1);
     }
-    setTimeout(() => {
-      setAlternator(!alternator);
-    }, indicatorTimeout);
   };
 
   return (
     <div>
       <Results right={rightAnswersCount} wrong={wrongAnswersCount} />
       <SingleNote note={note} octave={octave} />
-      <SelectNote onSelectNote={onSelectNote} ref={noteSelector} />
+      <SelectNote
+        onSelectNote={onSelectNote}
+        ref={noteSelector}
+        isDisabled={disableSelector}
+      />
     </div>
   );
 };
