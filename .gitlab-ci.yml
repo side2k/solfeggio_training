@@ -1,0 +1,55 @@
+stages:
+  - lint
+  - build
+  - deploy
+
+image: node:16-alpine
+
+cache:
+  key: npm
+  policy: pull-push
+  paths:
+    - .npm/
+
+eslint:
+  stage: lint
+  script:
+    - npm ci --cache .npm --prefer-offline
+    - npm run lint
+
+build:
+  stage: build
+  cache:
+    key: dist-${CI_COMMIT_SHA}
+    paths:
+      - dist/
+  script:
+    - npm ci
+    - npm run build:static
+    - npm run build
+
+upload_to_production:
+  stage: deploy
+  cache:
+    key: dist-${CI_COMMIT_SHA}
+    paths:
+      - dist/
+
+  only:
+    - main
+
+  script:
+    - apk add --update openssh-client
+    - eval $(ssh-agent)
+    - echo "$SSH_KEY" | tr -d '\r' | ssh-add -
+    - mkdir ~/.ssh/
+    - ssh-keyscan ${PRODUCTION_HOST} >> ~/.ssh/known_hosts
+    - chmod 644 -R ~/.ssh
+    - cd dist/
+    - tar -cz  --exclude=*.map -f /tmp/solfeggio.tar.gz *
+    - scp /tmp/solfeggio.tar.gz ${PRODUCTION_USER}@${PRODUCTION_HOST}:/tmp/
+    - ssh ${PRODUCTION_USER}@${PRODUCTION_HOST} "bash -c
+      \"cd ${PRODUCTION_DIR}/;
+      rm ${PRODUCTION_DIR}/*;
+      tar -xzf /tmp/solfeggio.tar.gz;
+      rm /tmp/solfeggio.tar.gz\""
