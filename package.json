@@ -6,8 +6,8 @@
   "scripts": {
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\"",
     "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --quiet",
-    "build:static": "parcel build static/**/*",
-    "build": "NODE_ENV=production parcel build src/index.html",
+    "build:static": "npx parcel build static/**/*",
+    "build": "NODE_ENV=production npx parcel build src/index.html",
     "dev": "npm run build:static && parcel src/index.html",
     "typecheck": "tsc --noEmit"
   },
