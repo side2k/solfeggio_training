@@ -24,7 +24,7 @@ build:
     paths:
       - dist/
   script:
-    - npm ci
+    - npm ci --cache .npm --prefer-offline
     - npm run build:static
     - npm run build
 
