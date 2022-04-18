@@ -1,4 +1,4 @@
-import { Note, Octave, NoteData, Clef } from "./types";
+import { Note, Octave, NoteData, Clef, NoteRange } from "./types";
 import {
   NOTE_NAMES,
   OCTAVE_LABELS,
@@ -9,11 +9,6 @@ const OCTAVES = Object.values(Octave)
   .map((n) => +n)
   .filter((n) => !Number.isNaN(n)) as Octave[];
 const NOTES = Object.values(Note) as Note[];
-
-type NoteRange = {
-  min: NoteData;
-  max: NoteData;
-};
 
 const DISPLAYED_RANGES = {
   [Clef.Treble]: {

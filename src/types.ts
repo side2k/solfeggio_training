@@ -32,3 +32,8 @@ export enum Clef {
 }
 
 export type DisplayedNote = NoteData & { clef: Clef };
+
+export type NoteRange = {
+  min: NoteData;
+  max: NoteData;
+};
