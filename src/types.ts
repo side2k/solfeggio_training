@@ -25,3 +25,10 @@ export type NoteData = {
   note: Note;
   octave: Octave;
 };
+
+export enum Clef {
+  Treble = "treble",
+  Bass = "bass",
+}
+
+export type DisplayedNote = NoteData & { clef: Clef };
