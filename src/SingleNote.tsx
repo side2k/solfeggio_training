@@ -1,6 +1,6 @@
 import { renderAbc } from "abcjs";
 import { FunctionComponent, useEffect, useRef } from "react";
-import { NoteData } from "./types";
+import { Clef, NoteData } from "./types";
 
 function noteToNotation({ note, octave }: NoteData) {
   const startOctave = 4;
@@ -15,12 +15,18 @@ function noteToNotation({ note, octave }: NoteData) {
   return note.toLowerCase() + "'".repeat(delta - 1);
 }
 
-const SingleNote: FunctionComponent<NoteData> = ({ note, octave }) => {
+type NoteDisplayProps = NoteData & { clef: Clef };
+
+const SingleNote: FunctionComponent<NoteDisplayProps> = ({
+  note,
+  octave,
+  clef,
+}) => {
   const abcRef = useRef<HTMLDivElement>(null);
 
   const staveData = `
   L: 1/4
-  K: clef=treble
+  K: clef=${clef}
   ${noteToNotation({ note, octave })}`;
 
   useEffect(() => {
