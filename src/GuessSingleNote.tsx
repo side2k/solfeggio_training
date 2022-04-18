@@ -61,6 +61,7 @@ const GuessSingleNote = () => {
       <Results right={rightAnswersCount} wrong={wrongAnswersCount} />
       <SingleNote note={note} octave={octave} />
       <SelectNote
+        visibleOctaves={[Octave.Line1, Octave.Line2]}
         onSelectNote={onSelectNote}
         ref={noteSelector}
         isDisabled={disableSelector}

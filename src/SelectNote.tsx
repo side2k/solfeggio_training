@@ -2,15 +2,17 @@ import { useState, useImperativeHandle, forwardRef } from "react";
 import { noteToShortName } from "./utils";
 import { Note, Octave, NoteData } from "./types";
 
-const visibleOctaves: Octave[] = [Octave.Line1, Octave.Line2];
-
 enum IndicatorState {
   Normal = 0,
   Right,
   Wrong,
 }
 type NoteSelectEvent = (selectedNote: NoteData) => void;
-type SelectNoteProps = { onSelectNote: NoteSelectEvent; isDisabled: boolean };
+type SelectNoteProps = {
+  onSelectNote: NoteSelectEvent;
+  isDisabled: boolean;
+  visibleOctaves: Octave[];
+};
 
 export type NoteSelectorRef = {
   indicateRight: (timeout: number) => void;
@@ -44,7 +46,7 @@ const SelectNote = forwardRef<NoteSelectorRef, SelectNoteProps>(
 
     return (
       <div className="note-selector">
-        {visibleOctaves.map((octave, key) => (
+        {props.visibleOctaves.map((octave, key) => (
           <div className="flex flex-row  gap-1 pb-2" key={key}>
             {Object.values(Note).map((note, key) => (
               <div key={key}>
