@@ -5,7 +5,9 @@ import {
   OCTAVE_SHORT_LABELS,
 } from "./languages/russian";
 
-const OCTAVES = Object.values(Octave) as Octave[];
+const OCTAVES = Object.values(Octave)
+  .map((n) => +n)
+  .filter((n) => !Number.isNaN(n)) as Octave[];
 const NOTES = Object.values(Note) as Note[];
 
 type NoteRange = {
@@ -32,9 +34,12 @@ export function noteToShortName({ note, octave }: NoteData): string {
   return `${NOTE_NAMES[note]}-${OCTAVE_SHORT_LABELS[octave]}`;
 }
 
-function noteToAbsoluteIndex(note: NoteData) {
+function noteToAbsoluteIndex(note: NoteData): number {
   const indexWithinOctave = NOTES.indexOf(note.note);
-  const octaveIndex = note.octave as number;
+  const octaveIndex = note.octave.valueOf();
+  if (isNaN(octaveIndex)) {
+    throw new Error("fuck it!");
+  }
 
   return octaveIndex * 7 + indexWithinOctave;
 }
@@ -74,9 +79,10 @@ export function generateRandomNote(range: NoteRange): NoteData {
 }
 
 export function getRandomClef(note: NoteData): Clef {
-  const noteIndex = noteToAbsoluteIndex(note);
+  const noteIndex: number = noteToAbsoluteIndex(note);
   const availableClefs = Object.entries(DISPLAYED_RANGES)
-    .filter(([_, range]) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    .filter(([clef, range]) => {
       const indexRange = noteRangeToIndexRange(range);
       return indexRange.indexOf(noteIndex) >= 0;
     })
