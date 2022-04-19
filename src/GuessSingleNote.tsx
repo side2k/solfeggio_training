@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import Results from "./Results";
 import SelectNote, { NoteSelectorRef } from "./SelectNote";
 import SingleNote from "./SingleNote";
-import { Note, NoteData, Octave, DisplayedNote } from "./types";
+import { DisplayedNote, Note, NoteData, Octave } from "./types";
 import { generateRandomNote, getRandomClef } from "./utils";
 
 const randomNoteRange = {
@@ -22,16 +22,26 @@ const GuessSingleNote = () => {
   const beepWrong = new Audio("./beep_wrong.mp3");
 
   const updateNote = () => {
-    let newNote: DisplayedNote;
+    let newNote: DisplayedNote | undefined;
     let randomNote: NoteData;
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
+    let retriesLeft = 10;
+    while (retriesLeft > 0) {
       randomNote = generateRandomNote(randomNoteRange);
       newNote = { ...randomNote, clef: getRandomClef(randomNote) };
 
-      if (newNote.note != displayedNote?.note) {
+      if (
+        (newNote && !displayedNote) ||
+        (displayedNote &&
+          (newNote.note != displayedNote.note ||
+            newNote.octave != displayedNote.octave ||
+            newNote.clef != displayedNote.clef))
+      ) {
         break;
       }
+      retriesLeft--;
+    }
+    if (!retriesLeft || !newNote) {
+      throw new Error("Couldn't generate new note after multiple retries!");
     }
     setDisplayedNote(newNote);
   };
