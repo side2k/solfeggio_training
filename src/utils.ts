@@ -32,9 +32,6 @@ export function noteToShortName({ note, octave }: NoteData): string {
 function noteToAbsoluteIndex(note: NoteData): number {
   const indexWithinOctave = NOTES.indexOf(note.note);
   const octaveIndex = note.octave.valueOf();
-  if (isNaN(octaveIndex)) {
-    throw new Error("fuck it!");
-  }
 
   return octaveIndex * 7 + indexWithinOctave;
 }
