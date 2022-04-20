@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import Results from "./Results";
 import SelectNote, { NoteSelectorRef } from "./SelectNote";
 import SingleNote from "./SingleNote";
+import Timer from "./Timer";
 import { DisplayedNote, Note, NoteData, Octave } from "./types";
 import { generateRandomNote, getRandomClef } from "./utils";
 
@@ -76,7 +77,10 @@ const GuessSingleNote = () => {
 
   return (
     <div>
-      <Results right={rightAnswersCount} wrong={wrongAnswersCount} />
+      <div className="flex flex-row gap-4">
+        <Timer />
+        <Results right={rightAnswersCount} wrong={wrongAnswersCount} />
+      </div>
       <SingleNote note={note} octave={octave} clef={clef} />
       <SelectNote
         visibleOctaves={[
