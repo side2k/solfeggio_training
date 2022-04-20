@@ -84,7 +84,6 @@ const GuessSingleNote = () => {
           Octave.Small,
           Octave.Line1,
           Octave.Line2,
-          Octave.Line3,
         ]}
         onSelectNote={onSelectNote}
         ref={noteSelector}
