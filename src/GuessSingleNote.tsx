@@ -17,10 +17,12 @@ const GuessSingleNote = () => {
   const [wrongAnswersCount, setWrongAnswersCount] = useState(0);
   const [disableSelector, setDisableSelector] = useState(false);
   const noteSelector = useRef<NoteSelectorRef | null>(null);
+  const [isTimerActive, setIsTimerActive] = useState(true);
 
   const indicatorTimeout = 500;
   const beepRight = new Audio("./beep_right.mp3");
   const beepWrong = new Audio("./beep_wrong.mp3");
+  const beepWin = new Audio("./beep_win.mp3");
 
   const updateNote = () => {
     let newNote: DisplayedNote | undefined;
@@ -54,31 +56,44 @@ const GuessSingleNote = () => {
 
   const { note, octave, clef } = displayedNote;
 
-  const onSelectNote = (selectedNote: NoteData) => {
-    if (!noteSelector.current) {
-      return <div></div>;
-    }
-
-    if (selectedNote.note === note && selectedNote.octave === octave) {
+  function onRightAnswer() {
+    if (noteSelector.current) {
       noteSelector.current.indicateRight(indicatorTimeout);
-      void beepRight.play();
-      setRightAnswersCount(rightAnswersCount + 1);
-      setDisableSelector(true);
-      setTimeout(() => {
-        updateNote();
-        setDisableSelector(false);
-      }, indicatorTimeout);
+    }
+    setRightAnswersCount(rightAnswersCount + 1);
+    if (rightAnswersCount + 1 === 50) {
+      void beepWin.play();
+      setIsTimerActive(false);
     } else {
+      void beepRight.play();
+    }
+    setDisableSelector(true);
+    setTimeout(() => {
+      updateNote();
+      setDisableSelector(false);
+    }, indicatorTimeout);
+  }
+
+  function onWrongAnswer() {
+    if (noteSelector.current) {
       noteSelector.current.indicateWrong(indicatorTimeout);
-      void beepWrong.play();
-      setWrongAnswersCount(wrongAnswersCount + 1);
+    }
+    void beepWrong.play();
+    setWrongAnswersCount(wrongAnswersCount + 1);
+  }
+
+  const onSelectNote = (selectedNote: NoteData) => {
+    if (selectedNote.note === note && selectedNote.octave === octave) {
+      onRightAnswer();
+    } else {
+      onWrongAnswer();
     }
   };
 
   return (
     <div>
       <div className="flex flex-row gap-4">
-        <Timer />
+        <Timer isActive={isTimerActive} />
         <Results right={rightAnswersCount} wrong={wrongAnswersCount} />
       </div>
       <SingleNote note={note} octave={octave} clef={clef} />
