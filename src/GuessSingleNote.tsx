@@ -54,24 +54,32 @@ const GuessSingleNote = () => {
 
   const { note, octave, clef } = displayedNote;
 
-  const onSelectNote = (selectedNote: NoteData) => {
-    if (!noteSelector.current) {
-      return <div></div>;
-    }
-
-    if (selectedNote.note === note && selectedNote.octave === octave) {
+  function onRightAnswer() {
+    if (noteSelector.current) {
       noteSelector.current.indicateRight(indicatorTimeout);
-      void beepRight.play();
-      setRightAnswersCount(rightAnswersCount + 1);
-      setDisableSelector(true);
-      setTimeout(() => {
-        updateNote();
-        setDisableSelector(false);
-      }, indicatorTimeout);
-    } else {
+    }
+    setRightAnswersCount(rightAnswersCount + 1);
+    void beepRight.play();
+    setDisableSelector(true);
+    setTimeout(() => {
+      updateNote();
+      setDisableSelector(false);
+    }, indicatorTimeout);
+  }
+
+  function onWrongAnswer() {
+    if (noteSelector.current) {
       noteSelector.current.indicateWrong(indicatorTimeout);
-      void beepWrong.play();
-      setWrongAnswersCount(wrongAnswersCount + 1);
+    }
+    void beepWrong.play();
+    setWrongAnswersCount(wrongAnswersCount + 1);
+  }
+
+  const onSelectNote = (selectedNote: NoteData) => {
+    if (selectedNote.note === note && selectedNote.octave === octave) {
+      onRightAnswer();
+    } else {
+      onWrongAnswer();
     }
   };
 
