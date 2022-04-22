@@ -1,11 +1,13 @@
 import { FunctionComponent, useEffect, useState } from "react";
 
-const Timer: FunctionComponent = () => {
+const Timer: FunctionComponent<{ isActive: boolean }> = ({ isActive }) => {
   const [secondsPassed, setSecondsPassed] = useState(0);
 
   useEffect(() => {
-    setTimeout(() => setSecondsPassed(secondsPassed + 1), 1000);
-  }, [secondsPassed]);
+    if (isActive) {
+      setTimeout(() => setSecondsPassed(secondsPassed + 1), 1000);
+    }
+  }, [secondsPassed, isActive]);
 
   const minutes = Math.floor(secondsPassed / 60);
   const seconds = secondsPassed - minutes * 60;

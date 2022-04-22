@@ -17,10 +17,12 @@ const GuessSingleNote = () => {
   const [wrongAnswersCount, setWrongAnswersCount] = useState(0);
   const [disableSelector, setDisableSelector] = useState(false);
   const noteSelector = useRef<NoteSelectorRef | null>(null);
+  const [isTimerActive, setIsTimerActive] = useState(true);
 
   const indicatorTimeout = 500;
   const beepRight = new Audio("./beep_right.mp3");
   const beepWrong = new Audio("./beep_wrong.mp3");
+  const beepWin = new Audio("./beep_win.mp3");
 
   const updateNote = () => {
     let newNote: DisplayedNote | undefined;
@@ -59,7 +61,12 @@ const GuessSingleNote = () => {
       noteSelector.current.indicateRight(indicatorTimeout);
     }
     setRightAnswersCount(rightAnswersCount + 1);
-    void beepRight.play();
+    if (rightAnswersCount + 1 === 50) {
+      void beepWin.play();
+      setIsTimerActive(false);
+    } else {
+      void beepRight.play();
+    }
     setDisableSelector(true);
     setTimeout(() => {
       updateNote();
@@ -86,7 +93,7 @@ const GuessSingleNote = () => {
   return (
     <div>
       <div className="flex flex-row gap-4">
-        <Timer />
+        <Timer isActive={isTimerActive} />
         <Results right={rightAnswersCount} wrong={wrongAnswersCount} />
       </div>
       <SingleNote note={note} octave={octave} clef={clef} />
