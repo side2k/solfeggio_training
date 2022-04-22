@@ -51,6 +51,9 @@ const SelectNote = forwardRef<NoteSelectorRef, SelectNoteProps>(
       <div className="note-selector">
         {sortedOctaves.map((octave, octaveKey) => (
           <div className="flex flex-row  gap-1 pb-2" key={octaveKey}>
+            <div key={octaveKey} className="p-1 font-bold w-8">
+              {octaveShortName(octave)}
+            </div>
             {Object.values(Note).map((note, noteKey) => (
               <div key={noteKey}>
                 <button
@@ -70,7 +73,7 @@ const SelectNote = forwardRef<NoteSelectorRef, SelectNoteProps>(
                 }
                 `}
                 >
-                  {noteToShortName({ note, octave })}
+                  {noteName(note)}
                 </button>
               </div>
             ))}
