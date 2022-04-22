@@ -59,7 +59,7 @@ const SelectNote = forwardRef<NoteSelectorRef, SelectNoteProps>(
                 <button
                   disabled={props.isDisabled ? true : false}
                   onClick={getNoteClickEvent({ note, octave })}
-                  className={`rounded border border-black p-1
+                  className={`rounded border border-gray-300 p-1
                 ${
                   selectedNote &&
                   note === selectedNote.note &&
