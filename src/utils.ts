@@ -5,10 +5,10 @@ import {
   OCTAVE_SHORT_LABELS,
 } from "./languages/russian";
 
-const OCTAVES = Object.values(Octave)
+export const OCTAVES = Object.values(Octave)
   .map((n) => +n)
   .filter((n) => !Number.isNaN(n)) as Octave[];
-const NOTES = Object.values(Note) as Note[];
+export const NOTES = Object.values(Note) as Note[];
 
 const DISPLAYED_RANGES = {
   [Clef.Treble]: {
@@ -21,8 +21,16 @@ const DISPLAYED_RANGES = {
   },
 };
 
-export function noteToName(note: Note, octave: Octave): string {
+export function noteToFullName(note: Note, octave: Octave): string {
   return `${NOTE_NAMES[note]} ${OCTAVE_LABELS[octave]} октавы`;
+}
+
+export function noteName(note: Note): string {
+  return NOTE_NAMES[note];
+}
+
+export function octaveShortName(octave: Octave): string {
+  return OCTAVE_SHORT_LABELS[octave];
 }
 
 export function noteToShortName({ note, octave }: NoteData): string {

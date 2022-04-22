@@ -1,5 +1,5 @@
 import { useState, useImperativeHandle, forwardRef } from "react";
-import { noteToShortName } from "./utils";
+import { noteName, OCTAVES, octaveShortName } from "./utils";
 import { Note, Octave, NoteData } from "./types";
 
 enum IndicatorState {
@@ -25,6 +25,9 @@ const SelectNote = forwardRef<NoteSelectorRef, SelectNoteProps>(
     const [indicateState, setIndicateState] = useState<IndicatorState>(
       IndicatorState.Normal
     );
+    const sortedOctaves = Array.from(props.visibleOctaves)
+      .sort((a, b) => OCTAVES.indexOf(a) - OCTAVES.indexOf(b))
+      .reverse();
 
     const getNoteClickEvent = ({ note, octave }: NoteData) => {
       return () => {
@@ -46,14 +49,17 @@ const SelectNote = forwardRef<NoteSelectorRef, SelectNoteProps>(
 
     return (
       <div className="note-selector">
-        {props.visibleOctaves.map((octave, key) => (
-          <div className="flex flex-row  gap-1 pb-2" key={key}>
-            {Object.values(Note).map((note, key) => (
-              <div key={key}>
+        {sortedOctaves.map((octave, octaveKey) => (
+          <div className="flex flex-row  gap-1 pb-2" key={octaveKey}>
+            <div key={octaveKey} className="p-1 font-bold w-8">
+              {octaveShortName(octave)}
+            </div>
+            {Object.values(Note).map((note, noteKey) => (
+              <div key={noteKey}>
                 <button
                   disabled={props.isDisabled ? true : false}
                   onClick={getNoteClickEvent({ note, octave })}
-                  className={`rounded border border-black p-1
+                  className={`rounded border border-gray-300 p-1
                 ${
                   selectedNote &&
                   note === selectedNote.note &&
@@ -67,7 +73,7 @@ const SelectNote = forwardRef<NoteSelectorRef, SelectNoteProps>(
                 }
                 `}
                 >
-                  {noteToShortName({ note, octave })}
+                  {noteName(note)}
                 </button>
               </div>
             ))}
