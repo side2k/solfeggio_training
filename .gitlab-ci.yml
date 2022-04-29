@@ -28,6 +28,15 @@ build:
     - npm run build:static
     - npm run build
 
+.setup_ssh:
+  script:
+    - apk add --update openssh-client
+    - eval $(ssh-agent)
+    - echo "$SSH_KEY" | tr -d '\r' | ssh-add -
+    - mkdir ~/.ssh/
+    - ssh-keyscan ${PRODUCTION_HOST} >> ~/.ssh/known_hosts
+    - chmod 644 -R ~/.ssh
+
 upload_to_production:
   stage: deploy
   cache:
@@ -39,12 +48,7 @@ upload_to_production:
     - main
 
   script:
-    - apk add --update openssh-client
-    - eval $(ssh-agent)
-    - echo "$SSH_KEY" | tr -d '\r' | ssh-add -
-    - mkdir ~/.ssh/
-    - ssh-keyscan ${PRODUCTION_HOST} >> ~/.ssh/known_hosts
-    - chmod 644 -R ~/.ssh
+    - !reference [.setup_ssh, script]
     - cd dist/
     - tar -cz  --exclude=*.map -f /tmp/solfeggio.tar.gz *
     - scp /tmp/solfeggio.tar.gz ${PRODUCTION_USER}@${PRODUCTION_HOST}:/tmp/
@@ -53,3 +57,13 @@ upload_to_production:
       rm ${PRODUCTION_DIR}/*;
       tar -xzf /tmp/solfeggio.tar.gz;
       rm /tmp/solfeggio.tar.gz\""
+
+push_to_github:
+  stage: deploy
+  only:
+    - main
+
+  script:
+    - !reference [.setup_ssh, script]
+    - "git remote add github https://github.com/side2k/solfeggio_training"
+    - "git push github ${CI_COMMIT_SHA}:main"
