@@ -65,5 +65,6 @@ push_to_github:
 
   script:
     - !reference [.setup_ssh, script]
+    - apk add --update git
     - "git remote add github https://github.com/side2k/solfeggio_training"
     - "git push github ${CI_COMMIT_SHA}:main"
