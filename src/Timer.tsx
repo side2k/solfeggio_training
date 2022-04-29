@@ -1,11 +1,17 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useRef, useState } from "react";
 
 const Timer: FunctionComponent<{ isActive: boolean }> = ({ isActive }) => {
   const [secondsPassed, setSecondsPassed] = useState(0);
+  const timer = useRef<number>();
 
   useEffect(() => {
     if (isActive) {
-      setTimeout(() => setSecondsPassed(secondsPassed + 1), 1000);
+      timer.current = setTimeout(
+        () => setSecondsPassed(secondsPassed + 1),
+        1000
+      );
+    } else if (timer.current) {
+      clearTimeout(timer.current);
     }
   }, [secondsPassed, isActive]);
 
