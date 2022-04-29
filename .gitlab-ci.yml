@@ -57,3 +57,13 @@ upload_to_production:
       rm ${PRODUCTION_DIR}/*;
       tar -xzf /tmp/solfeggio.tar.gz;
       rm /tmp/solfeggio.tar.gz\""
+
+push_to_github:
+  stage: deploy
+  only:
+    - main
+
+  script:
+    - !reference [.setup_ssh, script]
+    - "git remote add github https://github.com/side2k/solfeggio_training"
+    - "git push github ${CI_COMMIT_SHA}:main"
