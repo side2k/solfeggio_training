@@ -11,13 +11,13 @@ cache:
   paths:
     - .npm/
 
-.eslint:
+eslint:
   stage: lint
   script:
     - npm ci --cache .npm --prefer-offline
     - npm run lint
 
-.build:
+build:
   stage: build
   cache:
     key: dist-${CI_COMMIT_SHA}
@@ -37,7 +37,7 @@ cache:
     - ssh-keyscan ${PRODUCTION_HOST} >> ~/.ssh/known_hosts
     - chmod 644 -R ~/.ssh
 
-.upload_to_production:
+upload_to_production:
   stage: deploy
   cache:
     key: dist-${CI_COMMIT_SHA}
@@ -60,12 +60,12 @@ cache:
 
 push_to_github:
   stage: deploy
-  #only:
-  #  - main
+  only:
+    - main
 
   script:
     - !reference [.setup_ssh, script]
     - ssh-keyscan github.com >> ~/.ssh/known_hosts
     - apk add --update git
     - "git remote add github ${GITHUB_REPO_URL} || git remote set-url github ${GITHUB_REPO_URL}"
-    - "git push github ${CI_COMMIT_SHA}:refs/heads/test"
+    - "git push github ${CI_COMMIT_SHA}:refs/heads/${CI_DEFAULT_BRANCH}"
