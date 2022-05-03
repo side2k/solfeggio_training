@@ -66,5 +66,5 @@ push_to_github:
   script:
     - !reference [.setup_ssh, script]
     - apk add --update git
-    - "git remote add github ${GITHUB_REPO_URL} || echo Remote already added"
+    - "git remote add github ${GITHUB_REPO_URL} || git remote set-url github ${GITHUB_REPO_URL}"
     - "git push github ${CI_COMMIT_SHA}:main"
