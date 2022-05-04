@@ -6,9 +6,8 @@
   "scripts": {
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\"",
     "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --quiet",
-    "build:static": "npx parcel build static/**/*",
-    "build": "NODE_ENV=production npx parcel build src/index.html",
-    "dev": "npm run build:static && parcel src/index.html",
+    "build": "NODE_ENV=production npx vite build",
+    "dev": "npx vite",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [],
