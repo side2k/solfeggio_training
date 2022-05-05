@@ -20,9 +20,9 @@ const GuessSingleNote = () => {
   const [isTimerActive, setIsTimerActive] = useState(true);
 
   const indicatorTimeout = 500;
-  const beepRight = new Audio("./beep_right.mp3");
-  const beepWrong = new Audio("./beep_wrong.mp3");
-  const beepWin = new Audio("./beep_win.mp3");
+  const beepRight = new Audio("static/sounds/beep_right.mp3");
+  const beepWrong = new Audio("static/sounds/beep_wrong.mp3");
+  const beepWin = new Audio("static/sounds/beep_win.mp3");
 
   const updateNote = () => {
     let newNote: DisplayedNote | undefined;

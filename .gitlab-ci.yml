@@ -16,6 +16,7 @@ eslint:
   script:
     - npm ci --cache .npm --prefer-offline
     - npm run lint
+    - npm run typecheck
 
 build:
   stage: build
@@ -25,7 +26,6 @@ build:
       - dist/
   script:
     - npm ci --cache .npm --prefer-offline
-    - npm run build:static
     - npm run build
 
 .setup_ssh:
@@ -50,7 +50,9 @@ upload_to_production:
   script:
     - !reference [.setup_ssh, script]
     - cd dist/
-    - tar -cz  --exclude=*.map -f /tmp/solfeggio.tar.gz *
+    - tar -cf /tmp/solfeggio.tar --exclude=*.map -C dist/ .
+    - tar -rf /tmp/solfeggio.tar static/
+    - gzip /tmp/solfeggio.tar
     - scp /tmp/solfeggio.tar.gz ${PRODUCTION_USER}@${PRODUCTION_HOST}:/tmp/
     - ssh ${PRODUCTION_USER}@${PRODUCTION_HOST} "bash -c
       \"cd ${PRODUCTION_DIR}/;
