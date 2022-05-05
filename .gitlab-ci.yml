@@ -49,7 +49,6 @@ upload_to_production:
 
   script:
     - !reference [.setup_ssh, script]
-    - cd dist/
     - tar -cf /tmp/solfeggio.tar --exclude=*.map -C dist/ .
     - tar -rf /tmp/solfeggio.tar static/
     - gzip /tmp/solfeggio.tar
